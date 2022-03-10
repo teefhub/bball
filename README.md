@@ -1,6 +1,5 @@
-# bball
 
-<h1 align="center">bball_schedule</h1>
+<h1 align="left">bball_schedule</h1>
 <p align="left">
 </p>
 
