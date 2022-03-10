@@ -1,6 +1,6 @@
 # bball
 
-<h1 align="center">Hi 👋, I'm bball_schedule</h1>
+<h1 align="center">bball_schedule</h1>
 <p align="left">
 </p>
 
