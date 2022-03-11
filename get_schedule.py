@@ -17,11 +17,12 @@ def get_id(team):
     st = s + b
     try:
         response = urllib.request.urlopen(st) 
-        
+        #webbrowser.open(st)
         return st
     except Exception as e:            
         print()
 
-    #webbrowser.open(get_id(team))
-   
+
+
+
 

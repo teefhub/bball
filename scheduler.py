@@ -14,6 +14,7 @@ canvas1.create_window(400, 100, window=label1)
 
 entry1 = tk.Entry (root)
 canvas1.create_window(400, 150, window=entry1) 
+
 canvas2 = tk.Canvas(root, width = 200, height = 200)
 canvas2.pack()
 
@@ -55,6 +56,11 @@ def run_script():
 def Reset():
     canvas2.delete("all")
            
+           
+
+
+
+
 button1 = tk.Button (root, text='Check schedule ',command=run_script, bg='palegreen2', font=('Arial', 11, 'bold')) 
 canvas1.create_window(400, 220, window=button1)
 
