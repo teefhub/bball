@@ -1,30 +1,56 @@
 import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
+import requests
 import get_schedule
+from bs4 import BeautifulSoup
+
 root= tk.Tk()
   
 canvas1 = tk.Canvas(root, width = 800, height = 500)
 canvas1.pack()
 
-label1 = tk.Label(root, text='Next game is ')
+label1 = tk.Label(root, text='Enter team name')
 label1.config(font=('Arial', 20))
 canvas1.create_window(400, 50, window=label1)
 
+entry1 = tk.Entry (root)
+canvas1.create_window(400, 100, window=entry1) 
 
 def run_script(): 
-    x =  get_schedule.get_schedule()
-    label = tk.Label(root, text= str(x),font=('Arial', 30, 'bold'))
-    #entry1.insert(0,label)
-    #canvas1.create_window(150, 20, window=label)
-    #this creates a new label to the GUI
-    label.pack(pady=5) 
+    global x1
+    x1 = str(entry1.get())
+    site = get_schedule.get_id(x1)
+    l = []
+    r = requests.get(site)
+    c = r.content
 
-            
-button1 = tk.Button (root, text=' Run Script ',command=run_script, bg='palegreen2', font=('Arial', 11, 'bold')) 
+    s = BeautifulSoup(c,"html.parser")
+    a = s.findAll("div",{"id":"teamhome-next-wrap"})
+    print(a)
+    try:
+        for i in a:
+            d ={}
+            d["Date and Time"] = i.find("div",{"class":"sptime"}).text.replace(u'\xa0', u' ')
+            d["Team"] = i.find("span",{"class":"team2name"}).text
+            l.append(d)
+        game = l[0]["Date and Time"]
+        team = l[0]["Team"]
+        s =  'Next Game is \n' + game +'\n'
+        ss= 'Opponent: \n'+ team
+        label = tk.Label(root, text= s,font=('Arial', 20))
+        label.pack()  
+        label2 = tk.Label(root, text=ss ,font=('Arial', 20))
+        label2.pack()
+        
+    except Exception:
+        print("No Schedule available")
+
+
+           
+button1 = tk.Button (root, text='Check schedule ',command=run_script, bg='palegreen2', font=('Arial', 11, 'bold')) 
 canvas1.create_window(400, 220, window=button1)
 
-button3 = tk.Button (root, text='Exit Application', command=root.destroy, bg='lightsteelblue2', font=('Arial', 11, 'bold'))
+
+button3 = tk.Button (root, text='Exit', command=root.destroy, bg='lightsteelblue2', font=('Arial', 11, 'bold'))
 canvas1.create_window(400,300 , window=button3)
  
 root.mainloop()
